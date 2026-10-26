@@ -1,0 +1,452 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>解放通勤人生的收入設計指南</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 一張「一天的時間單」。8 小時以外被拿走的時間用琥珀色標出，往下是真實時薪、收入設計三個方向、90 天實驗。單欄手機優先。 */
+:root {
+  --paper: #eef1f2;
+  --card: #fafbfb;
+  --ink: #14232b;
+  --ink-soft: #52646d;
+  --rule: #cdd6da;
+  --teal: #0f6b7a;
+  --teal-soft: #d9ebee;
+  --amber: #e0a526;
+  --amber-ink: #3a2a00;
+  --seg-work: #6b7f89;
+  --seg-prep: #b7c5cc;
+  --seg-commute: #e0a526;
+  --font-display: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1a20;
+    --card: #15262e;
+    --ink: #e8eff1;
+    --ink-soft: #9db0b8;
+    --rule: #2b4049;
+    --teal: #5cc0cf;
+    --teal-soft: #17353d;
+    --amber: #f0bd4a;
+    --amber-ink: #2a1e00;
+    --seg-work: #8ca0aa;
+    --seg-prep: #4a5d67;
+    --seg-commute: #f0bd4a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1a20;
+  --card: #15262e;
+  --ink: #e8eff1;
+  --ink-soft: #9db0b8;
+  --rule: #2b4049;
+  --teal: #5cc0cf;
+  --teal-soft: #17353d;
+  --amber: #f0bd4a;
+  --amber-ink: #2a1e00;
+  --seg-work: #8ca0aa;
+  --seg-prep: #4a5d67;
+  --seg-commute: #f0bd4a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+.wrap > * { min-width: 0; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.3; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+.eyebrow { font-size: 13px; letter-spacing: 0.08em; color: var(--ink-soft); font-weight: 500; }
+.eyebrow b { color: var(--teal); font-weight: 700; }
+h1 { font-size: clamp(30px, 8.6vw, 42px); font-weight: 900; letter-spacing: 0.01em; margin-top: 10px; }
+.lede { margin-top: 14px; color: var(--ink-soft); max-width: 34em; }
+
+/* time sheet */
+.slip { background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px; padding: 20px 18px 18px; display: flex; flex-direction: column; gap: 18px; }
+.slip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1.5px dashed var(--rule); padding-bottom: 12px; }
+.slip-head h2 { font-size: 17px; font-weight: 700; }
+.slip-head span { font-size: 12px; color: var(--ink-soft); letter-spacing: 0.08em; }
+.inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.inputs > * { min-width: 0; }
+.field label, .field .lab { display: block; font-size: 13px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
+.field.wide { grid-column: 1 / -1; }
+.inp { display: flex; align-items: baseline; gap: 6px; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+.inp span { font-family: var(--font-num); font-size: 14px; color: var(--ink-soft); white-space: nowrap; }
+.inp input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font-family: var(--font-num); font-weight: 600; font-size: 26px; padding: 0; outline: none; width: 100%; }
+.inp:focus-within { border-bottom-color: var(--teal); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid var(--ink); border-radius: 3px; overflow: hidden; }
+.seg button { font: inherit; font-size: 15px; font-weight: 700; background: transparent; color: var(--ink); border: 0; border-right: 1.5px solid var(--ink); padding: 8px 4px; cursor: pointer; }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+.day-label { font-size: 12px; letter-spacing: 0.1em; color: var(--teal); font-weight: 700; }
+.bar { display: flex; height: 26px; border: 1.5px solid var(--ink); border-radius: 3px; overflow: hidden; background: var(--rule); }
+.bar i { display: block; height: 100%; min-width: 0; transition: flex-basis 0.25s ease; }
+.legend { display: grid; gap: 2px; margin-top: -6px; }
+.lg { display: grid; grid-template-columns: 12px 1fr auto; column-gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px dotted var(--rule); }
+.lg:last-child { border-bottom: 0; }
+.lg .sw { width: 12px; height: 12px; border-radius: 2px; align-self: center; }
+.lg .name { font-weight: 700; font-size: 15px; }
+.lg .name small { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.lg .amt { font-family: var(--font-num); font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; text-align: right; }
+.lg.hl { background: color-mix(in srgb, var(--amber) 16%, transparent); margin-inline: -8px; padding-inline: 8px; border-radius: 3px; border-bottom-color: transparent; }
+
+.net { border-top: 1.5px dashed var(--rule); padding-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.net > div { min-width: 0; }
+.net .k { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.net .v { font-family: var(--font-num); font-weight: 600; font-size: 22px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.net .v small { font-size: 13px; font-weight: 500; color: var(--ink-soft); margin-left: 2px; }
+.net .full { grid-column: 1 / -1; }
+.hero-num { background: var(--amber); color: var(--amber-ink); border-radius: 3px; padding: 14px; }
+.hero-num .k { color: var(--amber-ink); opacity: 0.85; }
+.hero-num .v { font-size: 34px; color: var(--amber-ink); }
+.hero-num .v small { color: var(--amber-ink); opacity: 0.8; }
+.fine { font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+
+/* sections */
+.sec-title { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.sec-title h2 { font-size: 26px; font-weight: 900; }
+.sec-title p { color: var(--ink-soft); font-size: 15px; }
+
+/* take back */
+.raise { background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px; padding: 20px 18px; display: flex; flex-direction: column; gap: 16px; }
+.raise h2 { font-size: 22px; font-weight: 900; }
+.raise .sub { color: var(--ink-soft); font-size: 15px; margin-top: -8px; }
+.slider label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 500; }
+.slider label output { font-family: var(--font-num); font-weight: 600; font-variant-numeric: tabular-nums; }
+.slider input[type="range"] { width: 100%; accent-color: var(--teal); margin: 10px 0 0; height: 28px; }
+.verdict { font-size: 15px; font-weight: 500; padding: 12px; background: var(--teal-soft); border-radius: 3px; }
+
+/* three ways */
+.ways { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.way { padding: 22px 0; border-top: 1.5px solid var(--ink); display: flex; flex-direction: column; gap: 10px; }
+.way:last-child { border-bottom: 1.5px solid var(--ink); }
+.way .tag { font-size: 12px; letter-spacing: 0.1em; color: var(--teal); font-weight: 700; }
+.way h3 { font-size: 20px; font-weight: 700; }
+.way p { font-size: 15.5px; }
+.way dl { margin: 0; display: grid; grid-template-columns: 5.5em 1fr; gap: 6px 10px; font-size: 14px; padding: 12px; background: var(--teal-soft); border-radius: 3px; }
+.way dt { font-weight: 700; color: var(--teal); }
+.way dd { margin: 0; min-width: 0; }
+
+/* ladder */
+.ladder { list-style: none; margin: 0; padding: 0; }
+.ladder li { display: grid; grid-template-columns: 76px 1fr; column-gap: 12px; padding: 16px 0; border-top: 1px dotted var(--rule); }
+.ladder li:last-child { border-bottom: 1px dotted var(--rule); }
+.ladder .when { font-family: var(--font-num); font-weight: 600; font-size: 14px; color: var(--teal); padding-top: 2px; }
+.ladder h3 { font-size: 17px; font-weight: 700; }
+.ladder p { font-size: 14.5px; color: var(--ink-soft); margin-top: 4px; }
+
+.check { list-style: none; margin: 0; padding: 0; }
+.check li { border-top: 1px dotted var(--rule); }
+.check li:last-child { border-bottom: 1px dotted var(--rule); }
+.check label { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; cursor: pointer; font-size: 15.5px; }
+.check input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--teal); }
+.check input:checked + span { color: var(--ink-soft); text-decoration: line-through; }
+
+.note { border: 1.5px solid var(--ink); border-radius: 4px; padding: 16px; background: var(--card); font-size: 14.5px; display: flex; flex-direction: column; gap: 6px; }
+.note b { font-size: 15px; }
+
+.foot { border-top: 1.5px solid var(--ink); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.foot .brand { font-family: var(--font-num); font-weight: 600; font-size: 15px; }
+.foot .brand span { color: var(--teal); }
+
+@media (max-width: 380px) {
+  .inputs, .net { grid-template-columns: 1fr; }
+  .way dl { grid-template-columns: 1fr; gap: 2px; }
+  .way dd { margin-bottom: 8px; }
+  .ladder li { grid-template-columns: 1fr; row-gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow"><b>aga.insure__</b> ・ 留言專屬資料</p>
+    <h1>解放通勤人生的收入設計指南</h1>
+    <p class="lede">先算出通勤一年拿走你多少小時，再看你的真實時薪。最後選一個方向，用 90 天做一個小實驗。</p>
+  </header>
+
+  <section class="slip" aria-labelledby="slip-title">
+    <div class="slip-head">
+      <h2 id="slip-title">我的一天時間單</h2>
+      <span>範例：單程 60 分鐘</span>
+    </div>
+
+    <div class="inputs">
+      <div class="field">
+        <label for="commute">通勤，單程幾分鐘</label>
+        <div class="inp"><input id="commute" type="text" inputmode="numeric" autocomplete="off" value="60"><span>分鐘</span></div>
+      </div>
+      <div class="field">
+        <label for="prep">準備上班，每天幾分鐘</label>
+        <div class="inp"><input id="prep" type="text" inputmode="numeric" autocomplete="off" value="60"><span>分鐘</span></div>
+      </div>
+      <div class="field">
+        <label for="salary">月薪（選填，算真實時薪）</label>
+        <div class="inp"><span>NT$</span><input id="salary" type="text" inputmode="numeric" autocomplete="off" value="45,000"></div>
+      </div>
+      <div class="field">
+        <p class="lab" id="days-label">每週上班幾天</p>
+        <div class="seg" role="group" aria-labelledby="days-label">
+          <button type="button" data-days="4" aria-pressed="false">4 天</button>
+          <button type="button" data-days="5" aria-pressed="true">5 天</button>
+          <button type="button" data-days="6" aria-pressed="false">6 天</button>
+        </div>
+      </div>
+      <p class="fine wide field">準備上班包含起床梳洗、整理、等車。上班時間以每天 8 小時計。</p>
+    </div>
+
+    <div>
+      <p class="day-label">你一天給工作的時間</p>
+    </div>
+    <div class="bar" id="bar" role="img" aria-label="一天給工作的時間比例條">
+      <i id="b-work" style="background:var(--seg-work)"></i>
+      <i id="b-prep" style="background:var(--seg-prep)"></i>
+      <i id="b-commute" style="background:var(--seg-commute)"></i>
+    </div>
+    <div class="legend">
+      <div class="lg">
+        <i class="sw" style="background:var(--seg-work)"></i>
+        <div class="name">上班<small>薪水有算的部分</small></div>
+        <div class="amt" id="l-work">8 小時</div>
+      </div>
+      <div class="lg">
+        <i class="sw" style="background:var(--seg-prep)"></i>
+        <div class="name">準備上班<small>薪水沒算</small></div>
+        <div class="amt" id="l-prep">0</div>
+      </div>
+      <div class="lg hl">
+        <i class="sw" style="background:var(--seg-commute)"></i>
+        <div class="name">通勤（來回）<small>薪水沒算</small></div>
+        <div class="amt" id="l-commute">0</div>
+      </div>
+    </div>
+
+    <div class="net" aria-live="polite">
+      <div class="hero-num full">
+        <p class="k">一年光通勤就花掉</p>
+        <p class="v"><span id="n-year">0</span><small>小時</small></p>
+      </div>
+      <div><p class="k">相當於幾個 8 小時工作天</p><p class="v" id="n-days">0<small>天</small></p></div>
+      <div><p class="k">每天給工作的總時間</p><p class="v" id="n-total">0<small>小時</small></p></div>
+      <div><p class="k">帳面時薪（只算 8 小時）</p><p class="v" id="n-nominal">—</p></div>
+      <div><p class="k">真實時薪（算進通勤與準備）</p><p class="v" id="n-real">—</p></div>
+      <p class="fine full">一年以 50 週計，已扣掉假期。真實時薪是把月薪除以你實際給工作的所有時間，是用來看清楚時間成本的概念，不代表公司少付你薪水。</p>
+    </div>
+  </section>
+
+  <section class="raise" aria-labelledby="take-title">
+    <h2 id="take-title">把時間拿回來一部分</h2>
+    <p class="sub">不用全部，先想像拿回一小塊。</p>
+    <div class="slider">
+      <label for="take">拿回通勤時間的 <output id="take-out" for="take">20%</output></label>
+      <input id="take" type="range" min="0" max="100" step="10" value="20">
+    </div>
+    <p class="verdict" id="take-verdict" aria-live="polite"></p>
+    <p class="fine">拿回的方式可以是遠距上班日、換近一點的住處、把車程改成聽課或閱讀。每個人的條件不同，這裡只是幫你把時間看成具體的數字。</p>
+  </section>
+
+  <section aria-labelledby="ways-title">
+    <div class="sec-title">
+      <h2 id="ways-title">收入設計的三個方向</h2>
+      <p>目標是讓收入不再綁定你的所在地，不是叫你明天辭職。三個方向可以並行，也可以只選一個。</p>
+    </div>
+    <ul class="ways">
+      <li class="way">
+        <p class="tag">方向一　不換地點，換工作模式</p>
+        <h3>把本業變成可以遠距的工作</h3>
+        <p>跟公司談遠距日，或轉到可以遠端作業的職務。對現在的收入影響最小，最容易先成功。</p>
+        <dl>
+          <dt>適合誰</dt><dd>目前職務大部分在電腦上完成的人</dd>
+          <dt>第一步</dt><dd>列出本週哪些工作其實不用進辦公室，拿數字去談試行一天</dd>
+          <dt>要留意</dt><dd>要看公司制度，不一定談得成</dd>
+        </dl>
+      </li>
+      <li class="way">
+        <p class="tag">方向二　用技能多一條收入</p>
+        <h3>把你會的事變成可以接案的服務</h3>
+        <p>設計、寫作、剪輯、翻譯、教學、顧問，只要不需要在場，就能在通勤的零碎時間以外，另外開一條收入來源。</p>
+        <dl>
+          <dt>適合誰</dt><dd>有一項別人願意付費的專長，願意花時間累積口碑的人</dd>
+          <dt>第一步</dt><dd>找一個熟人，免費或低價做一次小案子，換一則真實評價</dd>
+          <dt>要留意</dt><dd>初期收入不穩，要排時間，也要留意本業的兼職規定</dd>
+        </dl>
+      </li>
+      <li class="way">
+        <p class="tag">方向三　讓錢幫你工作</p>
+        <h3>建立不需要時間投入的資產收入</h3>
+        <p>前面《薪水變資產》那一頁的延伸：每月固定投入，長期累積股息、租金或其他被動來源。它最慢，但最不受地點限制。</p>
+        <dl>
+          <dt>適合誰</dt><dd>已有預備金，能長期持有、不盯盤的人</dd>
+          <dt>第一步</dt><dd>先確認預備金存滿 3 個月生活支出，再設定每月自動扣款</dd>
+          <dt>要留意</dt><dd>投資有波動，不保證報酬，金額要在自己能承受的範圍</dd>
+        </dl>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="ladder-title">
+    <div class="sec-title">
+      <h2 id="ladder-title">90 天小實驗</h2>
+      <p>不要一次改人生，先用三個月驗證一個方向行不行。</p>
+    </div>
+    <ol class="ladder">
+      <li>
+        <p class="when">第 1–2 週</p>
+        <div><h3>量出現況</h3><p>用上面的時間單算出你的年通勤時數和真實時薪，寫在手機備忘錄。</p></div>
+      </li>
+      <li>
+        <p class="when">第 3–4 週</p>
+        <div><h3>選一個方向</h3><p>三個方向只選一個，寫下你願意每週投入幾小時。</p></div>
+      </li>
+      <li>
+        <p class="when">第 2 個月</p>
+        <div><h3>做出第一個小成果</h3><p>一次遠距試行、一個接案、或第一筆自動投入。小一點沒關係，要真的發生。</p></div>
+      </li>
+      <li>
+        <p class="when">第 3 個月</p>
+        <div><h3>檢討並決定</h3><p>回頭看：花了多少時間、得到什麼、要不要加碼。數字說了算。</p></div>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="todo-title">
+    <div class="sec-title">
+      <h2 id="todo-title">本週先做這三件事</h2>
+      <p>勾起來，這頁就算沒白看。</p>
+    </div>
+    <ul class="check">
+      <li><label for="c1"><input id="c1" type="checkbox" data-k="c1"><span>用上面的時間單，算出我的年通勤小時數</span></label></li>
+      <li><label for="c2"><input id="c2" type="checkbox" data-k="c2"><span>在三個方向裡，挑一個我最想試的</span></label></li>
+      <li><label for="c3"><input id="c3" type="checkbox" data-k="c3"><span>寫下我每週可以固定拿出幾小時</span></label></li>
+    </ul>
+  </section>
+
+  <div class="note">
+    <b>收入來源變多，也要把風險顧好</b>
+    <p>自由接案或收入不固定時，生病或受傷就等於收入中斷。預備金和醫療、意外等保障，是讓你敢嘗試新模式的底氣。想確認自己目前缺哪一塊，留言或私訊告訴我。</p>
+  </div>
+
+  <footer class="foot">
+    <p class="brand"><span>@</span>aga.insure__</p>
+    <p class="fine">本頁為一般性觀念分享與試算，不構成投資、保險或職涯建議。接案與投資的收益都不保證；保障型商品請依個人需求與條款審慎評估。</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var days = 5;
+  var WORK_H = 8, WEEKS = 50;
+
+  function num(id, max) {
+    var n = parseInt($(id).value.replace(/[^0-9]/g, ""), 10);
+    if (!isFinite(n) || n < 0) n = 0;
+    return Math.min(n, max);
+  }
+  function fmtH(h) {
+    var r = Math.round(h * 10) / 10;
+    return (r % 1 === 0 ? r.toFixed(0) : r.toFixed(1)) + " 小時";
+  }
+  function nt(n) { return "NT$" + Math.round(n).toLocaleString("en-US"); }
+
+  var yearHours = 0;
+
+  function render() {
+    var oneWay = num("commute", 300);
+    var prep = num("prep", 300);
+    var salary = num("salary", 10000000);
+
+    var commuteH = oneWay * 2 / 60;
+    var prepH = prep / 60;
+    var totalH = WORK_H + commuteH + prepH;
+
+    $("l-prep").textContent = fmtH(prepH);
+    $("l-commute").textContent = fmtH(commuteH);
+
+    [["work", WORK_H], ["prep", prepH], ["commute", commuteH]].forEach(function (p) {
+      var el = $("b-" + p[0]);
+      el.style.flexBasis = (p[1] / totalH * 100) + "%";
+      el.style.flexGrow = 0;
+      el.style.flexShrink = 0;
+    });
+
+    yearHours = commuteH * days * WEEKS;
+    $("n-year").textContent = Math.round(yearHours).toLocaleString("en-US");
+    $("n-days").innerHTML = (Math.round(yearHours / WORK_H * 10) / 10).toLocaleString("en-US") + "<small>天</small>";
+    $("n-total").innerHTML = (Math.round(totalH * 10) / 10) + "<small>小時</small>";
+
+    var monthDays = days * WEEKS / 12;
+    if (salary > 0 && monthDays > 0) {
+      $("n-nominal").textContent = nt(salary / (monthDays * WORK_H)) + "/時";
+      $("n-real").textContent = nt(salary / (monthDays * totalH)) + "/時";
+    } else {
+      $("n-nominal").textContent = "—";
+      $("n-real").textContent = "—";
+    }
+    renderTake();
+  }
+
+  function renderTake() {
+    var t = parseInt($("take").value, 10) || 0;
+    $("take-out").textContent = t + "%";
+    var back = yearHours * t / 100;
+    var perWeek = back / WEEKS;
+    $("take-verdict").textContent = t === 0
+      ? "先把滑桿往右拉，看看拿回一部分時間是什麼樣子。"
+      : "一年拿回約 " + Math.round(back).toLocaleString("en-US") + " 小時，平均每週 " + (Math.round(perWeek * 10) / 10) + " 小時，足夠固定經營一件自己的事。";
+  }
+
+  function bind(el, evs, fn) { evs.forEach(function (e) { el.addEventListener(e, fn); }); }
+  var EVS = ["input", "keyup", "change", "paste", "compositionend"];
+  ["commute", "prep"].forEach(function (id) {
+    bind($(id), EVS, function () { setTimeout(render, 0); });
+    $(id).addEventListener("blur", function () { this.value = this.value === "" ? "" : String(num(id, 300)); });
+    $(id).addEventListener("focus", function () { this.select(); });
+  });
+  bind($("salary"), EVS, function () { setTimeout(render, 0); });
+  $("salary").addEventListener("blur", function () { var n = num("salary", 10000000); this.value = this.value === "" ? "" : n.toLocaleString("en-US"); });
+  $("salary").addEventListener("focus", function () { this.select(); });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function (b) {
+    b.addEventListener("click", function () {
+      days = parseInt(b.getAttribute("data-days"), 10);
+      Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      render();
+    });
+  });
+  bind($("take"), ["input", "change"], renderTake);
+
+  Array.prototype.forEach.call(document.querySelectorAll(".check input"), function (c) {
+    try { if (localStorage.getItem("aga-commute-" + c.getAttribute("data-k")) === "1") c.checked = true; } catch (e) {}
+    c.addEventListener("change", function () {
+      try { localStorage.setItem("aga-commute-" + c.getAttribute("data-k"), c.checked ? "1" : "0"); } catch (e) {}
+    });
+  });
+
+  render();
+})();
+</script>
+
+</body></html>
