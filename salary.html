@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>把薪水變資產的三步驟</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 一張「薪資分配單」。先扣自己（資產、預備金、保障），剩下才是生活費。其後三步驟、加薪規則、本週清單，單欄手機優先。 */
+:root {
+  --paper: #eef1f2;
+  --card: #fafbfb;
+  --ink: #14232b;
+  --ink-soft: #52646d;
+  --rule: #cdd6da;
+  --teal: #0f6b7a;
+  --teal-soft: #d9ebee;
+  --amber: #e0a526;
+  --amber-ink: #3a2a00;
+  --seg-need: #6b7f89;
+  --seg-want: #b7c5cc;
+  --seg-buffer: #2a8a99;
+  --seg-protect: #1d5e6b;
+  --seg-asset: #e0a526;
+  --font-display: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1a20;
+    --card: #15262e;
+    --ink: #e8eff1;
+    --ink-soft: #9db0b8;
+    --rule: #2b4049;
+    --teal: #5cc0cf;
+    --teal-soft: #17353d;
+    --amber: #f0bd4a;
+    --amber-ink: #2a1e00;
+    --seg-need: #8ca0aa;
+    --seg-want: #4a5d67;
+    --seg-buffer: #4db3c2;
+    --seg-protect: #7ccad6;
+    --seg-asset: #f0bd4a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1a20;
+  --card: #15262e;
+  --ink: #e8eff1;
+  --ink-soft: #9db0b8;
+  --rule: #2b4049;
+  --teal: #5cc0cf;
+  --teal-soft: #17353d;
+  --amber: #f0bd4a;
+  --amber-ink: #2a1e00;
+  --seg-need: #8ca0aa;
+  --seg-want: #4a5d67;
+  --seg-buffer: #4db3c2;
+  --seg-protect: #7ccad6;
+  --seg-asset: #f0bd4a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+.wrap > * { min-width: 0; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.3; }
+p { margin: 0; }
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+/* header */
+.eyebrow { font-size: 13px; letter-spacing: 0.08em; color: var(--ink-soft); font-weight: 500; }
+.eyebrow b { color: var(--teal); font-weight: 700; }
+h1 { font-size: clamp(30px, 8.6vw, 42px); font-weight: 900; letter-spacing: 0.01em; margin-top: 10px; }
+.lede { margin-top: 14px; color: var(--ink-soft); font-size: 16px; max-width: 34em; }
+
+/* payslip */
+.slip { background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px; padding: 20px 18px 18px; display: flex; flex-direction: column; gap: 18px; }
+.slip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1.5px dashed var(--rule); padding-bottom: 12px; }
+.slip-head h2 { font-size: 17px; font-weight: 700; }
+.slip-head span { font-size: 12px; color: var(--ink-soft); letter-spacing: 0.08em; }
+.field label { display: block; font-size: 13px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
+.money { display: flex; align-items: baseline; gap: 8px; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+.money span { font-family: var(--font-num); font-size: 18px; color: var(--ink-soft); }
+.money input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font-family: var(--font-num); font-weight: 600; font-size: 32px; padding: 0; outline: none; }
+.money:focus-within { border-bottom-color: var(--teal); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1.5px solid var(--ink); border-radius: 3px; overflow: hidden; }
+.seg button { font: inherit; background: transparent; color: var(--ink); border: 0; border-right: 1.5px solid var(--ink); padding: 8px 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; line-height: 1.35; }
+.seg button:last-child { border-right: 0; }
+.seg button b { font-size: 15px; font-weight: 700; }
+.seg button small { font-size: 11px; color: var(--ink-soft); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg button[aria-pressed="true"] small { color: var(--paper); opacity: 0.8; }
+
+.group { display: flex; flex-direction: column; gap: 2px; }
+.group-label { font-size: 12px; letter-spacing: 0.1em; color: var(--teal); font-weight: 700; margin-bottom: 4px; }
+.row { display: grid; grid-template-columns: 12px 1fr auto; column-gap: 10px; align-items: baseline; padding: 9px 0; border-bottom: 1px dotted var(--rule); }
+.row:last-child { border-bottom: 0; }
+.sw { width: 12px; height: 12px; border-radius: 2px; align-self: center; }
+.row .name { font-weight: 700; font-size: 15px; }
+.row .name small { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.row .amt { text-align: right; font-family: var(--font-num); font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; }
+.row .amt small { display: block; font-weight: 500; font-size: 12px; color: var(--ink-soft); }
+.row.hl { background: color-mix(in srgb, var(--amber) 16%, transparent); margin-inline: -8px; padding-inline: 8px; border-radius: 3px; border-bottom-color: transparent; }
+.bar { display: flex; height: 18px; border: 1.5px solid var(--ink); border-radius: 3px; overflow: hidden; background: var(--rule); }
+.bar i { display: block; height: 100%; min-width: 0; transition: flex-basis 0.25s ease; }
+.bar-note { font-size: 12px; color: var(--ink-soft); display: flex; justify-content: space-between; margin-top: -10px; }
+
+.net { border-top: 1.5px dashed var(--rule); padding-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.net > div { min-width: 0; }
+.net .k { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.net .v { font-family: var(--font-num); font-weight: 600; font-size: 20px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.net .v.big { color: var(--ink); }
+.net .full { grid-column: 1 / -1; }
+.fine { font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+
+/* steps */
+.sec-title { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.sec-title h2 { font-size: 26px; font-weight: 900; }
+.sec-title p { color: var(--ink-soft); font-size: 15px; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.step { display: grid; grid-template-columns: 52px 1fr; column-gap: 12px; padding: 22px 0; border-top: 1.5px solid var(--ink); }
+.step:last-child { border-bottom: 1.5px solid var(--ink); }
+.step .n { font-family: var(--font-num); font-weight: 600; font-size: 40px; line-height: 1; color: var(--teal); }
+.step h3 { font-size: 20px; font-weight: 700; }
+.step p { margin-top: 8px; color: var(--ink); font-size: 15.5px; }
+.step .do { margin-top: 12px; font-size: 14px; color: var(--ink-soft); padding: 10px 12px; background: var(--teal-soft); border-radius: 3px; }
+.step .do b { color: var(--teal); font-weight: 700; margin-right: 4px; }
+
+/* raise */
+.raise { background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px; padding: 20px 18px; display: flex; flex-direction: column; gap: 18px; }
+.raise h2 { font-size: 22px; font-weight: 900; }
+.raise .sub { color: var(--ink-soft); font-size: 15px; margin-top: -8px; }
+.slider label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 500; }
+.slider label output { font-family: var(--font-num); font-weight: 600; font-variant-numeric: tabular-nums; }
+.slider input[type="range"] { width: 100%; accent-color: var(--teal); margin: 10px 0 0; height: 28px; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.compare > div { border: 1.5px solid var(--rule); border-radius: 3px; padding: 12px; min-width: 0; }
+.compare .tag { font-size: 12px; color: var(--ink-soft); }
+.compare .v { font-family: var(--font-num); font-weight: 600; font-size: 20px; margin-top: 2px; overflow-wrap: anywhere; }
+.compare .good { background: var(--amber); border-color: var(--amber); color: var(--amber-ink); }
+.compare .good .tag { color: var(--amber-ink); opacity: 0.8; }
+.verdict { font-size: 15px; font-weight: 500; }
+
+/* checklist */
+.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.check li { border-top: 1px dotted var(--rule); }
+.check li:last-child { border-bottom: 1px dotted var(--rule); }
+.check label { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; cursor: pointer; font-size: 15.5px; }
+.check input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--teal); }
+.check input:checked + span { color: var(--ink-soft); text-decoration: line-through; }
+
+/* footer */
+.foot { border-top: 1.5px solid var(--ink); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.foot .brand { font-family: var(--font-num); font-weight: 600; font-size: 15px; }
+.foot .brand span { color: var(--teal); }
+
+@media (max-width: 380px) {
+  .net { grid-template-columns: 1fr; }
+  .compare { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 40px 1fr; }
+  .step .n { font-size: 32px; }
+}
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow"><b>aga.insure__</b> ・ 留言專屬資料</p>
+    <h1>把薪水變資產的三步驟</h1>
+    <p class="lede">先輸入你的月薪，看看每個月的錢可以怎麼分。再用三步驟，把它變成不用靠意志力的習慣。</p>
+  </header>
+
+  <section class="slip" aria-labelledby="slip-title">
+    <div class="slip-head">
+      <h2 id="slip-title">每月薪資分配單</h2>
+      <span>範例：月薪 45,000</span>
+    </div>
+
+    <div class="field">
+      <label for="salary">你的月薪（實領）</label>
+      <div class="money"><span>NT$</span><input id="salary" type="text" inputmode="numeric" autocomplete="off" value="45,000" aria-describedby="salary-hint"></div>
+      <p class="fine" id="salary-hint" style="margin-top:6px">直接改成你的數字，下方會即時重算。</p>
+    </div>
+
+    <div class="field">
+      <label id="mode-label">選一種存法</label>
+      <div class="seg" role="group" aria-labelledby="mode-label">
+        <button type="button" data-mode="steady" aria-pressed="false"><b>穩健</b><small>資產 15%</small></button>
+        <button type="button" data-mode="standard" aria-pressed="true"><b>標準</b><small>資產 20%</small></button>
+        <button type="button" data-mode="push" aria-pressed="false"><b>衝刺</b><small>資產 25%</small></button>
+      </div>
+    </div>
+
+    <div class="group">
+      <p class="group-label">發薪日先扣</p>
+      <div class="row hl">
+        <i class="sw" style="background:var(--seg-asset)"></i>
+        <div class="name">資產啟動<small>定期定額、長期持有</small></div>
+        <div class="amt"><span id="a-asset">0</span><small id="p-asset">0%</small></div>
+      </div>
+      <div class="row">
+        <i class="sw" style="background:var(--seg-buffer)"></i>
+        <div class="name">緊急預備金<small>放著不動，遇到事才用</small></div>
+        <div class="amt"><span id="a-buffer">0</span><small id="p-buffer">0%</small></div>
+      </div>
+      <div class="row">
+        <i class="sw" style="background:var(--seg-protect)"></i>
+        <div class="name">保障規劃<small>醫療、意外等，依自身需求</small></div>
+        <div class="amt"><span id="a-protect">0</span><small id="p-protect">0%</small></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <p class="group-label">剩下才是生活費</p>
+      <div class="row">
+        <i class="sw" style="background:var(--seg-need)"></i>
+        <div class="name">生活支出<small>食衣住行育樂、各項帳單</small></div>
+        <div class="amt"><span id="a-need">0</span><small id="p-need">0%</small></div>
+      </div>
+    </div>
+
+    <div class="bar" id="bar" role="img" aria-label="薪水分配比例條">
+      <i id="b-asset" style="background:var(--seg-asset)"></i>
+      <i id="b-buffer" style="background:var(--seg-buffer)"></i>
+      <i id="b-protect" style="background:var(--seg-protect)"></i>
+      <i id="b-need" style="background:var(--seg-need)"></i>
+    </div>
+    <div class="bar-note"><span>先扣的部分</span><span>可以花的部分</span></div>
+
+    <div class="net" aria-live="polite">
+      <div><p class="k">每月替未來留下<br>（資產＋預備金）</p><p class="v" id="n-month">0</p></div>
+      <div><p class="k">一年後累積</p><p class="v big" id="n-year">0</p></div>
+      <div><p class="k">五年後累積</p><p class="v big" id="n-five">0</p></div>
+      <div><p class="k">預備金存滿 3 個月<br>生活支出需要</p><p class="v" id="n-buf">0</p></div>
+      <p class="fine full">累積金額只是把每月留下的錢相加，沒有計入任何投資報酬，實際會因市場與商品而不同。比例是常見的參考配置，不是針對你個人的建議。若生活支出超過 60%，先從固定支出下手調整。</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="steps-title">
+    <div class="sec-title">
+      <h2 id="steps-title">三步驟，照順序做</h2>
+      <p>順序不能顛倒：先有流程，再有防護，最後才讓錢去動。</p>
+    </div>
+    <ol class="steps">
+      <li class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>發薪日先扣自己</h3>
+          <p>薪水一進帳，先把資產那份轉走，剩下的才是這個月的生活費。等到月底再存，通常什麼都不剩。</p>
+          <p class="do"><b>這週就做</b>開一個專門放資產的帳戶，設定發薪日隔天自動轉帳。</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>先把防護牆蓋好</h3>
+          <p>預備金先存到 3 個月必要支出，再依自己的狀況評估醫療、意外等保障。一次意外，不該讓整個系統歸零。</p>
+          <p class="do"><b>這週就做</b>算出你的 3 個月必要支出，再檢查現有保障缺了哪一塊。</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>讓錢開始動起來</h3>
+          <p>預備金上軌道後，用定期定額分散投入。金額小也可以，重點是不中斷。投資有波動，不保證報酬。</p>
+          <p class="do"><b>這週就做</b>挑一個你看得懂的標的，先從每月一小筆開始。</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="raise" aria-labelledby="raise-title">
+    <h2 id="raise-title">加薪那天，先做這個決定</h2>
+    <p class="sub">生活方式通膨，通常發生在你什麼都沒決定的時候。</p>
+
+    <div class="slider">
+      <label for="raise">每月加薪 <output id="raise-out" for="raise">NT$8,000</output></label>
+      <input id="raise" type="range" min="1000" max="50000" step="1000" value="8000">
+    </div>
+    <div class="slider">
+      <label for="keep">把加薪的幾成轉進資產 <output id="keep-out" for="keep">50%</output></label>
+      <input id="keep" type="range" min="0" max="100" step="10" value="50">
+    </div>
+
+    <div class="compare" aria-live="polite">
+      <div><p class="tag">全部升級生活</p><p class="v">一年多 NT$0</p></div>
+      <div class="good"><p class="tag">先留下這個比例</p><p class="v" id="r-year">0</p></div>
+    </div>
+    <p class="verdict" id="r-verdict"></p>
+    <p class="fine">同樣沒有計入投資報酬。重點不是省，而是讓一部分的加薪，在你習慣之前就先被分走。</p>
+  </section>
+
+  <section aria-labelledby="todo-title">
+    <div class="sec-title">
+      <h2 id="todo-title">本週只做三件事</h2>
+      <p>勾起來，這頁就算沒白看。</p>
+    </div>
+    <ul class="check">
+      <li><label for="c1"><input id="c1" type="checkbox" data-k="c1"><span>算出自己的實領月薪，並選好一種存法</span></label></li>
+      <li><label for="c2"><input id="c2" type="checkbox" data-k="c2"><span>設定發薪日隔天的自動轉帳</span></label></li>
+      <li><label for="c3"><input id="c3" type="checkbox" data-k="c3"><span>寫下你的 3 個月必要支出是多少</span></label></li>
+    </ul>
+  </section>
+
+  <footer class="foot">
+    <p class="brand"><span>@</span>aga.insure__</p>
+    <p class="fine">看完有問題，留言或私訊告訴我你卡在哪一步。本頁為一般性理財觀念分享，不構成投資或保險建議；投資有風險，保障型商品請依個人需求與條款審慎評估。</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var PRESETS = {
+    steady:   { need: 60, buffer: 15, protect: 10, asset: 15 },
+    standard: { need: 60, buffer: 10, protect: 10, asset: 20 },
+    push:     { need: 60, buffer: 5,  protect: 10, asset: 25 }
+  };
+  var mode = "standard";
+  var $ = function (id) { return document.getElementById(id); };
+  var nt = function (n) { return "NT$" + Math.round(n).toLocaleString("en-US"); };
+  var r10 = function (x) { return Math.round(x / 10) * 10; };
+
+  function readSalary() {
+    var raw = $("salary").value.replace(/[^0-9]/g, "");
+    var n = parseInt(raw, 10);
+    if (!isFinite(n) || n < 0) n = 0;
+    return Math.min(n, 10000000);
+  }
+
+  function renderSlip() {
+    var s = readSalary();
+    var p = PRESETS[mode];
+    var asset = r10(s * p.asset / 100);
+    var buffer = r10(s * p.buffer / 100);
+    var protect = r10(s * p.protect / 100);
+    var need = Math.max(0, s - asset - buffer - protect);
+    var vals = { asset: asset, buffer: buffer, protect: protect, need: need };
+    var keys = ["asset", "buffer", "protect", "need"];
+    keys.forEach(function (k) {
+      $("a-" + k).textContent = nt(vals[k]);
+      var pct = s > 0 ? Math.round(vals[k] / s * 100) : 0;
+      $("p-" + k).textContent = pct + "%";
+      $("b-" + k).style.flexBasis = (s > 0 ? vals[k] / s * 100 : 0) + "%";
+      $("b-" + k).style.flexGrow = 0;
+      $("b-" + k).style.flexShrink = 0;
+    });
+    var month = asset + buffer;
+    $("n-month").textContent = nt(month);
+    $("n-year").textContent = nt(month * 12);
+    $("n-five").textContent = nt(month * 60);
+    $("n-buf").textContent = buffer > 0 ? Math.ceil(need * 3 / buffer) + " 個月" : "—";
+  }
+
+  function renderRaise() {
+    var r = parseInt($("raise").value, 10) || 0;
+    var k = parseInt($("keep").value, 10) || 0;
+    var save = r * k / 100;
+    var spend = r - save;
+    $("raise-out").textContent = nt(r);
+    $("keep-out").textContent = k + "%";
+    $("r-year").textContent = "一年多 " + nt(save * 12);
+    $("r-verdict").textContent = k === 0
+      ? "加薪 " + nt(r) + " 全部花掉，一年後帳戶沒有多一塊錢。"
+      : "加薪 " + nt(r) + "，留下 " + k + "%，一年後帳戶多 " + nt(save * 12) + "，生活仍然每月升級 " + nt(spend) + "。";
+  }
+
+  function bind(el, evs, fn) { evs.forEach(function (e) { el.addEventListener(e, fn); }); }
+  var EVS = ["input", "keyup", "change", "paste", "compositionend"];
+  bind($("salary"), EVS, function () { setTimeout(renderSlip, 0); });
+  $("salary").addEventListener("blur", function () { var n = readSalary(); this.value = n > 0 ? n.toLocaleString("en-US") : ""; });
+  $("salary").addEventListener("focus", function () { this.select(); });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function (b) {
+    b.addEventListener("click", function () {
+      mode = b.getAttribute("data-mode");
+      Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      renderSlip();
+    });
+  });
+
+  bind($("raise"), ["input", "change"], renderRaise);
+  bind($("keep"), ["input", "change"], renderRaise);
+
+  // checklist: light per-viewer convenience only
+  Array.prototype.forEach.call(document.querySelectorAll(".check input"), function (c) {
+    try { if (localStorage.getItem("aga-" + c.getAttribute("data-k")) === "1") c.checked = true; } catch (e) {}
+    c.addEventListener("change", function () {
+      try { localStorage.setItem("aga-" + c.getAttribute("data-k"), c.checked ? "1" : "0"); } catch (e) {}
+    });
+  });
+
+  renderSlip();
+  renderRaise();
+})();
+</script>
+
+</body>
+</html>
